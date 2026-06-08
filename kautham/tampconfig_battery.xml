@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ============================================================================
+  tampconfig_battery.xml
+  TAMP configuration for the battery-swap task
+  Robot: UR3e + Robotiq 2F-85 gripper
+  ============================================================================
+
+  This file bridges the PDDL symbolic planner (Fast Downward / downward_service)
+  with the geometric planner (The Kautham Project).
+
+  ── CONTROLS FORMAT ──────────────────────────────────────────────────────────
+  Each <Controls> element contains 7 space-separated values in [0, 1]:
+      [j1  j2  j3  j4  j5  j6  gripper]
+      j1..j6 : UR3e joint angles, normalized
+      gripper: Robotiq aperture (0.0 = fully open, 1.0 = fully closed)
+
+  Normalization formulas (from assignment PDF):
+      Joints 1, 2, 4, 5, 6:  q_norm = (q_rad + 2π) / 4π
+                              q_rad  = q_norm * 4π  − 2π
+      Joint 3 (elbow):        q_norm = (q_rad + π)  / 2π
+                              q_rad  = q_norm * 2π  − π
+
+  ── HOW TO FIND CONTROL VALUES ───────────────────────────────────────────────
+  Method A (recommended): Open the Kautham GUI, load the problem file, move
+    the robot to the desired configuration using IK or manual sliders, then
+    read the 7 slider values from the "Controls" panel.
+  Method B: Compute analytically from desired joint angles in radians, then
+    apply the normalization formula above.
+
+  ── POSE FORMAT IN KAUTHAM PROBLEM FILE ──────────────────────────────────────
+  Object poses in the Kautham .xml scene file use:
+      (TH, WZ, WY, WX, Z, Y, X)   ← axis-angle + translation
+  In the tampconfig <InitPose> / <FinalPose> fields, the order is:
+      (X, Y, Z, WX, WY, WZ, TH)   or   (X, Y, Z, TH, WX, WY, WZ)
+  Verify which convention your Kautham version expects by comparing with
+  the chess_ur3_robotiq demo.
+  ============================================================================
+-->
+
+<tampconfig>
+
+  <!-- ========================================================================
+       SECTION 1 – PROBLEM FILE
+       Path to the Kautham scene/problem .xml file that defines:
+         - Robot URDF/model (UR3e + Robotiq)
+         - Object models (box, batteries, discard tray)
+         - Initial object poses
+         - Collision world / obstacles
+
+       TODO: Replace TODO_PATH with the absolute path (or ROS package path)
+             to your Kautham scene file.  In the chess demo this would be
+             something like:
+               $(find kautham_ros)/demos/chess_ur3_robotiq/chess_ur3_robotiq.xml
+             For this project, create battery_task.xml in this kautham/ folder
+             by copying and adapting chess_ur3_robotiq.xml.
+       ======================================================================== -->
+  <Problemfiles>
+    <Problemfile>TODO_PATH/kautham/battery_task.xml</Problemfile>
+  </Problemfiles>
+
+
+  <!-- ========================================================================
+       SECTION 2 – NAMED STATES
+       Each State is a named, fully-specified robot configuration.
+       The TAMP solver uses these as waypoints when planning pick/place paths.
+
+       Naming convention used here:
+         home                     – robot rest pose
+         pregrasp_<object>        – hover/approach above the object (gripper open)
+         grasp_<object>_<loc>     – actual contact/grasp pose (gripper open;
+                                    closing happens as the action effect)
+         place_<object>_<loc>     – deposit pose at the target location
+                                    (gripper still closed; opening is the effect)
+
+       TODO for each state: use Kautham GUI to find the 7 control values
+       and replace the "TODO" placeholders below.
+       ======================================================================== -->
+  <States>
+
+    <!-- ── HOME ─────────────────────────────────────────────────────────────
+         Safe rest configuration.  All joints near 0 rad → all norms ≈ 0.5.
+         Gripper open (0.0).
+         TODO: Verify with the actual home used in the chess demo / your setup. -->
+    <State name="home">
+      <Controls>0.5 0.5 0.5 0.5 0.5 0.5 0.0</Controls>
+    </State>
+
+    <!-- ── PRE-GRASP: BOX LID (box is closed, lid is on top) ────────────────
+         Hover ~10-15 cm above the lid's grasp point, arm approaching from above.
+         Gripper fully open.
+         TODO: Set IK target = lid_center_pose + (0, 0, +0.12) in world frame,
+               then read slider values from Kautham. -->
+    <State name="pregrasp_lid_closed">
+      <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+    </State>
+
+    <!-- ── GRASP: BOX LID (at box_closed_pos) ───────────────────────────────
+         Fingertips aligned with lid edges, Z at grasp height.
+         Gripper open here; it closes as part of the pick action effect.
+         TODO: Lower from pregrasp_lid_closed by grasp offset (~5 cm). -->
+    <State name="grasp_lid_closed">
+      <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+    </State>
+
+    <!-- ── PLACE: BOX LID → lid_open_area ───────────────────────────────────
+         Configuration to deposit the lid beside the box.
+         Gripper still closed here; it opens as part of the place action effect.
+         TODO: Choose a stable surface next to the box, set IK target, read values. -->
+    <State name="place_lid_at_open_area">
+      <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+    </State>
+
+    <!-- ── PRE-GRASP: BATTERY OLD (inside_box) ──────────────────────────────
+         Approach from above into the open box interior.
+         Only reachable after box_open = true (lid has been moved).
+         TODO: IK target = battery_old_pose + (0, 0, +0.10) inside box frame. -->
+    <State name="pregrasp_battery_old">
+      <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+    </State>
+
+    <!-- ── GRASP: BATTERY OLD (inside_box) ──────────────────────────────────
+         Fingertips around the battery body at grasp height inside the box.
+         TODO: Lower from pregrasp_battery_old. Ensure wrist clears box walls. -->
+    <State name="grasp_battery_old">
+      <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+    </State>
+
+    <!-- ── PLACE: BATTERY OLD → discard_area ───────────────────────────────
+         Deposit pose above the discard tray/zone.
+         TODO: IK target = discard_area_pose + (0, 0, +0.05), gripper closed. -->
+    <State name="place_battery_old_discard">
+      <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+    </State>
+
+    <!-- ── PRE-GRASP: BATTERY NEW (battery_storage) ─────────────────────────
+         Approach above the new battery in the storage tray.
+         TODO: IK target = battery_new_pose + (0, 0, +0.10). -->
+    <State name="pregrasp_battery_new">
+      <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+    </State>
+
+    <!-- ── GRASP: BATTERY NEW (battery_storage) ─────────────────────────────
+         Fingertips around new battery in storage tray.
+         TODO: Lower from pregrasp_battery_new. -->
+    <State name="grasp_battery_new">
+      <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+    </State>
+
+    <!-- ── PLACE: BATTERY NEW → inside_box ──────────────────────────────────
+         Deposit pose to lower new battery into the open box slot.
+         Requires box_open = true; robot approaches from above.
+         TODO: IK target = inside_box_pose + small Z offset for deposit. -->
+    <State name="place_battery_new_inside">
+      <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+    </State>
+
+    <!-- ── PRE-GRASP: BOX LID (lid is at lid_open_area) ────────────────────
+         Approach above the lid in its resting position beside the box.
+         TODO: Same approach used as place_lid_at_open_area but with Z offset. -->
+    <State name="pregrasp_lid_open_area">
+      <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+    </State>
+
+    <!-- ── GRASP: BOX LID (at lid_open_area) ────────────────────────────────
+         Grasp the lid where it was deposited.
+         TODO: Lower from pregrasp_lid_open_area. -->
+    <State name="grasp_lid_open_area">
+      <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+    </State>
+
+    <!-- ── PLACE: BOX LID → box_closed_pos ─────────────────────────────────
+         Replace lid back on top of the box.  This sets box_open = false.
+         TODO: Mirror of grasp_lid_closed (same XYZ target, gripper closed). -->
+    <State name="place_lid_back_closed">
+      <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+    </State>
+
+  </States>
+
+
+  <!-- ========================================================================
+       SECTION 3 – ACTIONS
+       Each Action maps one PDDL pick or place action to a pair of robot
+       configurations that Kautham will connect with a collision-free path:
+
+         <HomeControls>  – the "transit endpoint" / pre-grasp hover config
+                           (where the robot arrives before the grasp/release)
+         <GraspControls> – the actual grasp/release configuration
+
+       The TAMP solver uses these together with the Kautham RRT planner to
+       compute full joint trajectories for each symbolic action.
+
+       Action names must match EXACTLY the PDDL action ground instances that
+       Fast Downward will output in the plan.  The convention here follows the
+       chess demo:  <pddl_action>_<object>_<location>
+       TODO: Confirm the exact naming convention expected by your version of
+             the tamp_helper / downward_service ROS nodes.
+       ======================================================================== -->
+  <Actions>
+
+    <!-- ──────────────────────────────────────────────────────────────────────
+         ACTION 1 of 8: pick box_lid from box_closed_pos
+         PDDL: (pick ur3 box_lid box_closed_pos)
+         This is the first pick in the task → opens the box.
+         ────────────────────────────────────────────────────────────────────── -->
+    <Action>
+      <Type>pick</Type>
+      <PDDLActionName>pick</PDDLActionName>
+      <Object>box_lid</Object>
+      <FromLocation>box_closed_pos</FromLocation>
+      <HomeControls>
+        <!-- Hover above lid, gripper open. State ref: pregrasp_lid_closed -->
+        <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+      </HomeControls>
+      <GraspControls>
+        <!-- Fingertips on lid, gripper about to close. State ref: grasp_lid_closed -->
+        <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+      </GraspControls>
+    </Action>
+
+    <!-- ──────────────────────────────────────────────────────────────────────
+         ACTION 2 of 8: place box_lid at lid_open_area
+         PDDL: (place ur3 box_lid lid_open_area)
+         Effect: (box_open) becomes true.
+         ────────────────────────────────────────────────────────────────────── -->
+    <Action>
+      <Type>place</Type>
+      <PDDLActionName>place</PDDLActionName>
+      <Object>box_lid</Object>
+      <ToLocation>lid_open_area</ToLocation>
+      <HomeControls>
+        <!-- Approach above lid resting spot, gripper closed (holding lid). -->
+        <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+      </HomeControls>
+      <GraspControls>
+        <!-- Deposit pose at lid_open_area. State ref: place_lid_at_open_area -->
+        <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+      </GraspControls>
+    </Action>
+
+    <!-- ──────────────────────────────────────────────────────────────────────
+         ACTION 3 of 8: pick battery_old from inside_box
+         PDDL: (pick ur3 battery_old inside_box)
+         Precondition: box_open must be true (lid already removed).
+         ────────────────────────────────────────────────────────────────────── -->
+    <Action>
+      <Type>pick</Type>
+      <PDDLActionName>pick</PDDLActionName>
+      <Object>battery_old</Object>
+      <FromLocation>inside_box</FromLocation>
+      <HomeControls>
+        <!-- Above box interior, gripper open. State ref: pregrasp_battery_old -->
+        <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+      </HomeControls>
+      <GraspControls>
+        <!-- Inside box at battery level. State ref: grasp_battery_old -->
+        <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+      </GraspControls>
+    </Action>
+
+    <!-- ──────────────────────────────────────────────────────────────────────
+         ACTION 4 of 8: place battery_old at discard_area
+         PDDL: (place ur3 battery_old discard_area)
+         ────────────────────────────────────────────────────────────────────── -->
+    <Action>
+      <Type>place</Type>
+      <PDDLActionName>place</PDDLActionName>
+      <Object>battery_old</Object>
+      <ToLocation>discard_area</ToLocation>
+      <HomeControls>
+        <!-- Approach above discard zone, holding old battery.
+             TODO: Use an intermediate hover pose above discard_area. -->
+        <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+      </HomeControls>
+      <GraspControls>
+        <!-- Deposit pose at discard tray. State ref: place_battery_old_discard -->
+        <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+      </GraspControls>
+    </Action>
+
+    <!-- ──────────────────────────────────────────────────────────────────────
+         ACTION 5 of 8: pick battery_new from battery_storage
+         PDDL: (pick ur3 battery_new battery_storage)
+         ────────────────────────────────────────────────────────────────────── -->
+    <Action>
+      <Type>pick</Type>
+      <PDDLActionName>pick</PDDLActionName>
+      <Object>battery_new</Object>
+      <FromLocation>battery_storage</FromLocation>
+      <HomeControls>
+        <!-- Above storage tray, gripper open. State ref: pregrasp_battery_new -->
+        <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+      </HomeControls>
+      <GraspControls>
+        <!-- At storage tray grasp height. State ref: grasp_battery_new -->
+        <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+      </GraspControls>
+    </Action>
+
+    <!-- ──────────────────────────────────────────────────────────────────────
+         ACTION 6 of 8: place battery_new at inside_box
+         PDDL: (place ur3 battery_new inside_box)
+         Precondition: box_open must be true.
+         ────────────────────────────────────────────────────────────────────── -->
+    <Action>
+      <Type>place</Type>
+      <PDDLActionName>place</PDDLActionName>
+      <Object>battery_new</Object>
+      <ToLocation>inside_box</ToLocation>
+      <HomeControls>
+        <!-- Approach above open box interior, holding new battery. -->
+        <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+      </HomeControls>
+      <GraspControls>
+        <!-- Lower into box slot. State ref: place_battery_new_inside -->
+        <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+      </GraspControls>
+    </Action>
+
+    <!-- ──────────────────────────────────────────────────────────────────────
+         ACTION 7 of 8: pick box_lid from lid_open_area
+         PDDL: (pick ur3 box_lid lid_open_area)
+         ────────────────────────────────────────────────────────────────────── -->
+    <Action>
+      <Type>pick</Type>
+      <PDDLActionName>pick</PDDLActionName>
+      <Object>box_lid</Object>
+      <FromLocation>lid_open_area</FromLocation>
+      <HomeControls>
+        <!-- Hover above lid at open area. State ref: pregrasp_lid_open_area -->
+        <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+      </HomeControls>
+      <GraspControls>
+        <!-- Grasp lid at open area. State ref: grasp_lid_open_area -->
+        <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+      </GraspControls>
+    </Action>
+
+    <!-- ──────────────────────────────────────────────────────────────────────
+         ACTION 8 of 8: place box_lid at box_closed_pos
+         PDDL: (place ur3 box_lid box_closed_pos)
+         Effect: (box_open) becomes false → box is closed again.
+         ────────────────────────────────────────────────────────────────────── -->
+    <Action>
+      <Type>place</Type>
+      <PDDLActionName>place</PDDLActionName>
+      <Object>box_lid</Object>
+      <ToLocation>box_closed_pos</ToLocation>
+      <HomeControls>
+        <!-- Approach above box top. Same area as pregrasp_lid_closed. -->
+        <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+      </HomeControls>
+      <GraspControls>
+        <!-- Lower lid onto box. State ref: place_lid_back_closed -->
+        <Controls>TODO TODO TODO TODO TODO TODO 0.0</Controls>
+      </GraspControls>
+    </Action>
+
+  </Actions>
+
+</tampconfig>

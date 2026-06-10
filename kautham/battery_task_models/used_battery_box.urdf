@@ -1,14 +1,93 @@
 <?xml version="1.0"?>
+<!--
+  used_battery_box.urdf
+  =====================
+  Bandeja de descarte de pilas GASTADAS (color rojo).
+
+  Dimensiones exteriores:  70 mm × 70 mm × 30 mm
+  Grosor de paredes:         5 mm
+  Interior accesible:       60 mm × 60 mm × 25 mm (abierto por arriba)
+
+  Origen URDF: Z = 0 en la base.
+  En la escena Kautham el obstacle Home tiene Z = 0.005.
+  Borde superior: Z_world = 0.005 + 0.030 = 0.035 m.
+-->
 <robot name="used_battery_box">
   <link name="base">
+
+    <!-- ── SUELO (70 × 70 × 5 mm, centro a Z = 2.5 mm) ─────────────────── -->
     <visual>
-      <origin xyz="0 0 0.01" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.12 0.10 0.02"/>
-      </geometry>
-      <material name="used_box_red">
-        <color rgba="0.8 0.1 0.1 1"/>
+      <origin xyz="0 0 0.0025" rpy="0 0 0"/>
+      <geometry><box size="0.070 0.070 0.005"/></geometry>
+      <material name="used_box_red_dark">
+        <color rgba="0.65 0.05 0.05 1"/>
       </material>
     </visual>
+    <collision>
+      <origin xyz="0 0 0.0025" rpy="0 0 0"/>
+      <geometry><box size="0.070 0.070 0.005"/></geometry>
+    </collision>
+
+    <!-- ── PARED IZQUIERDA (−X) ──────────────────────────────────────────── -->
+    <visual>
+      <origin xyz="-0.0325 0 0.0175" rpy="0 0 0"/>
+      <geometry><box size="0.005 0.070 0.025"/></geometry>
+      <material name="used_box_red_dark">
+        <color rgba="0.65 0.05 0.05 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0325 0 0.0175" rpy="0 0 0"/>
+      <geometry><box size="0.005 0.070 0.025"/></geometry>
+    </collision>
+
+    <!-- ── PARED DERECHA (+X) ────────────────────────────────────────────── -->
+    <visual>
+      <origin xyz="0.0325 0 0.0175" rpy="0 0 0"/>
+      <geometry><box size="0.005 0.070 0.025"/></geometry>
+      <material name="used_box_red_dark">
+        <color rgba="0.65 0.05 0.05 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0325 0 0.0175" rpy="0 0 0"/>
+      <geometry><box size="0.005 0.070 0.025"/></geometry>
+    </collision>
+
+    <!-- ── PARED DELANTERA (−Y) ───────────────────────────────────────────── -->
+    <visual>
+      <origin xyz="0 -0.0325 0.0175" rpy="0 0 0"/>
+      <geometry><box size="0.060 0.005 0.025"/></geometry>
+      <material name="used_box_red_dark">
+        <color rgba="0.65 0.05 0.05 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 -0.0325 0.0175" rpy="0 0 0"/>
+      <geometry><box size="0.060 0.005 0.025"/></geometry>
+    </collision>
+
+    <!-- ── PARED TRASERA (+Y) ─────────────────────────────────────────────── -->
+    <visual>
+      <origin xyz="0 0.0325 0.0175" rpy="0 0 0"/>
+      <geometry><box size="0.060 0.005 0.025"/></geometry>
+      <material name="used_box_red_dark">
+        <color rgba="0.65 0.05 0.05 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0.0325 0.0175" rpy="0 0 0"/>
+      <geometry><box size="0.060 0.005 0.025"/></geometry>
+    </collision>
+
+    <!-- ── ETIQUETA VISUAL "USED" ─────────────────────────────────────────── -->
+    <visual>
+      <origin xyz="0 -0.0355 0.0175" rpy="0 0 0"/>
+      <geometry><box size="0.040 0.001 0.010"/></geometry>
+      <material name="label_white">
+        <color rgba="0.95 0.95 0.95 1"/>
+      </material>
+    </visual>
+
   </link>
 </robot>

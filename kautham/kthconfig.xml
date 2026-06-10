@@ -1,7 +1,13 @@
 <?xml version="1.0"?>
-<Config>        
+<Config>
     <Problemfiles>
-        <kautham name="OMPL_RRTConnect_chess_ur3_gripper_2_simple.xml" />
-        <directory name="/demos/OMPL_geometric_demos/chess_ur3_robotiq/"/>
+        <kautham name="OMPL_RRTConnect_battery_change_ur3.xml" />
+        <!--
+          <directory> debe apuntar a la carpeta que contiene el fichero .xml
+          de la escena. Kautham lo usa como prefijo de búsqueda.
+
+          Con el repo en ~/ws_tamp/src/RA_final_manipuladores, la ruta es:
+        -->
+        <directory name="/home/pablo/ws_tamp/src/RA_final_manipuladores/kautham/"/>
     </Problemfiles>
 </Config>

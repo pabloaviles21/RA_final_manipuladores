@@ -1,14 +1,90 @@
 <?xml version="1.0"?>
+<!--
+  device_box.urdf
+  ===============
+  Caja del dispositivo electrónico con compartimento de batería.
+
+  Dimensiones exteriores:  70 mm × 70 mm × 68 mm
+  Grosor de paredes:         6 mm
+  Interior accesible:       58 mm × 58 mm × 62 mm (abierto por arriba)
+
+  Origen URDF: Z = 0 en la base del obstáculo.
+  En la escena Kautham el obstacle Home tiene Z = 0.005 (5 mm sobre la mesa).
+
+  Alturas relevantes en coordenadas mundo:
+    Suelo interior:  Z_world = 0.005 + 0.006 = 0.011 m  ← base de la batería
+    Borde superior:  Z_world = 0.005 + 0.068 = 0.073 m  ← tapa apoya aquí
+    Batería (59 mm): 0.011 + 0.059 = 0.070 m  (3 mm bajo el borde) ✓
+-->
 <robot name="device_box">
   <link name="base">
+
+    <!-- ── SUELO (70 × 70 × 6 mm, centro a Z = 3 mm) ───────────────────── -->
     <visual>
-      <origin xyz="0 0 0.01" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.16 0.14 0.02"/>
-      </geometry>
-      <material name="device_blue">
-        <color rgba="0.1 0.25 0.9 1"/>
+      <origin xyz="0 0 0.003" rpy="0 0 0"/>
+      <geometry><box size="0.070 0.070 0.006"/></geometry>
+      <material name="device_blue_dark">
+        <color rgba="0.08 0.18 0.70 1"/>
       </material>
     </visual>
+    <collision>
+      <origin xyz="0 0 0.003" rpy="0 0 0"/>
+      <geometry><box size="0.070 0.070 0.006"/></geometry>
+    </collision>
+
+    <!-- ── PARED IZQUIERDA (−X) ──────────────────────────────────────────── -->
+    <!--   6 × 70 × 62 mm; centro X = −32 mm, centro Z = 6 + 31 = 37 mm     -->
+    <visual>
+      <origin xyz="-0.032 0 0.037" rpy="0 0 0"/>
+      <geometry><box size="0.006 0.070 0.062"/></geometry>
+      <material name="device_blue_dark">
+        <color rgba="0.08 0.18 0.70 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.032 0 0.037" rpy="0 0 0"/>
+      <geometry><box size="0.006 0.070 0.062"/></geometry>
+    </collision>
+
+    <!-- ── PARED DERECHA (+X) ────────────────────────────────────────────── -->
+    <visual>
+      <origin xyz="0.032 0 0.037" rpy="0 0 0"/>
+      <geometry><box size="0.006 0.070 0.062"/></geometry>
+      <material name="device_blue_dark">
+        <color rgba="0.08 0.18 0.70 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.032 0 0.037" rpy="0 0 0"/>
+      <geometry><box size="0.006 0.070 0.062"/></geometry>
+    </collision>
+
+    <!-- ── PARED DELANTERA (−Y) ───────────────────────────────────────────── -->
+    <!--   58 × 6 × 62 mm (entre paredes laterales); centro Y = −32 mm       -->
+    <visual>
+      <origin xyz="0 -0.032 0.037" rpy="0 0 0"/>
+      <geometry><box size="0.058 0.006 0.062"/></geometry>
+      <material name="device_blue_dark">
+        <color rgba="0.08 0.18 0.70 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 -0.032 0.037" rpy="0 0 0"/>
+      <geometry><box size="0.058 0.006 0.062"/></geometry>
+    </collision>
+
+    <!-- ── PARED TRASERA (+Y) ─────────────────────────────────────────────── -->
+    <visual>
+      <origin xyz="0 0.032 0.037" rpy="0 0 0"/>
+      <geometry><box size="0.058 0.006 0.062"/></geometry>
+      <material name="device_blue_dark">
+        <color rgba="0.08 0.18 0.70 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0.032 0.037" rpy="0 0 0"/>
+      <geometry><box size="0.058 0.006 0.062"/></geometry>
+    </collision>
+
   </link>
 </robot>

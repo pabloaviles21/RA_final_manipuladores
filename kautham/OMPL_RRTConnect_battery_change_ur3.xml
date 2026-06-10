@@ -1,51 +1,102 @@
 <?xml version='1.0' encoding='utf-8'?>
+<!--
+  OMPL_RRTConnect_battery_change_ur3.xml
+  ========================================
+  Escena Kautham para la tarea de cambio de batería con UR3e + Robotiq 85.
+
+  Cambios respecto a la versión anterior:
+    - Eliminado flat_chessboard (restos del demo chess_ur3_robotiq).
+    - Añadida workspace_table como superficie de mesa genérica.
+    - device_box, new_battery_box, used_battery_box ahora tienen geometría
+      3D con paredes (ver battery_task_models/).
+    - Los obstáculos manipulables (box_lid, battery_old, battery_new) no
+      han cambiado de posición (coinciden con posiciones medidas en el lab).
+
+  Coordenadas de obstáculos (formato Kautham Home):
+    TH  WZ  WY  WX  Z      Y       X
+  Los objetos sin rotación usan (TH=0, WZ=0, WY=0, WX=1) ≡ identidad.
+
+  Rutas de modelo:
+    /robots/...      → relativo a KAUTHAM_MODELS_DIR/robots/
+    /obstacles/...   → relativo a KAUTHAM_MODELS_DIR/obstacles/
+    Instalar modelos battery_task con: scripts/install_battery_models.sh
+-->
 <Problem name="OMPL_RRTConnect_battery_change_ur3">
 
+        <!-- ══════════════════════════════════════════════════════════
+             ROBOT: UR3e + Robotiq 85 gripper
+             Base en X = 0.37 m con rotación 90° alrededor de Z.
+             ══════════════════════════════════════════════════════════ -->
         <Robot robot="/robots/robot_instances/UR_robotiq_85_gripper/ur3_robotiq_85_gripper.urdf.xacro" scale="1.0">
                 <KauthamName name="ur3_right" />
                 <Home TH="1.570796327" WZ="1.0" WY="0.0" WX="0.0" Z="0.0" Y="0.0" X="0.37" />
                 <ViewLink name="robotiq_85_base_link" />
         </Robot>
 
-        <Obstacle obstacle="/obstacles/chess/flat_chessboard/flat_chessboard.urdf" scale="1.0">
-                <KauthamName name="flat_chessboard" />
-                <Home TH="1.570796327" WZ="1.0" WY="0.0" WX="0.0" Z="0.0" Y="0.0" X="0.0" />
+        <!-- ══════════════════════════════════════════════════════════
+             OBSTÁCULOS ESTÁTICOS (no manipulables)
+             ══════════════════════════════════════════════════════════ -->
+
+        <!-- Mesa de trabajo (reemplaza flat_chessboard del demo chess) -->
+        <!-- Cara superior en Z_world = 0.000 m                         -->
+        <Obstacle obstacle="/obstacles/battery_task/workspace_table.urdf" scale="1.0">
+                <KauthamName name="workspace_table" />
+                <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.0" Y="0.0" X="0.0" />
         </Obstacle>
 
-        
+        <!-- Caja del dispositivo (160×140×30 mm, paredes 6 mm)          -->
+        <!-- Centro en X=−0.060 m, Y=0.080 m; cara superior a Z=0.035   -->
         <Obstacle obstacle="/obstacles/battery_task/device_box.urdf" scale="1.0">
                 <KauthamName name="device_box" />
                 <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.005" Y="0.080" X="-0.060" />
         </Obstacle>
 
+        <!-- Bandeja de pilas nuevas (verde, 120×100×25 mm)              -->
+        <!-- Centro en X=0.080 m, Y=−0.150 m; cara superior a Z=0.030   -->
         <Obstacle obstacle="/obstacles/battery_task/new_battery_box.urdf" scale="1.0">
                 <KauthamName name="new_battery_box" />
                 <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.005" Y="-0.150" X="0.080" />
         </Obstacle>
 
+        <!-- Bandeja de pilas gastadas (roja, 120×100×25 mm)             -->
+        <!-- Centro en X=0.080 m, Y=0.220 m; cara superior a Z=0.030    -->
         <Obstacle obstacle="/obstacles/battery_task/used_battery_box.urdf" scale="1.0">
                 <KauthamName name="used_battery_box" />
                 <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.005" Y="0.220" X="0.080" />
         </Obstacle>
 
-        
+        <!-- ══════════════════════════════════════════════════════════
+             OBSTÁCULOS MANIPULABLES (TAMP los mueve durante pick/place)
+             ══════════════════════════════════════════════════════════ -->
+
+        <!-- Tapa de la caja del dispositivo                              -->
+        <!-- Posición inicial: SOBRE el compartimento (Z=0.035)           -->
         <Obstacle obstacle="/obstacles/battery_task/lid.urdf" scale="1.0">
                 <KauthamName name="box_lid" />
-                <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.035" Y="0.125" X="-0.060" />
+                <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.073" Y="0.080" X="-0.060" />
         </Obstacle>
 
+        <!-- Pila vieja (roja) dentro del compartimento                   -->
         <Obstacle obstacle="/obstacles/battery_task/battery_old.urdf" scale="1.0">
                 <KauthamName name="battery_old" />
-                <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.035" Y="0.045" X="-0.060" />
+                <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.011" Y="0.080" X="-0.060" />
         </Obstacle>
 
+        <!-- Pila nueva (verde) en la bandeja de almacenamiento           -->
         <Obstacle obstacle="/obstacles/battery_task/battery_new.urdf" scale="1.0">
                 <KauthamName name="battery_new" />
-                <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.035" Y="-0.150" X="0.080" />
+                <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.010" Y="-0.150" X="0.080" />
         </Obstacle>
 
+        <!-- ══════════════════════════════════════════════════════════
+             CONTROLES DEL ROBOT
+             ══════════════════════════════════════════════════════════ -->
         <Controls robot="controls/right_ur3_with_gripper.cntr" />
 
+        <!-- ══════════════════════════════════════════════════════════
+             PLANIFICADOR: RRTConnect
+             Tiempo máx. 10 s por tramo; aumentar si falla algún path.
+             ══════════════════════════════════════════════════════════ -->
         <Planner>
                 <Parameters>
                         <Name>omplRRTConnect</Name>
@@ -57,17 +108,28 @@
                         <Parameter name="_Speed Factor">1</Parameter>
                         <Parameter name="Range">0.5</Parameter>
                 </Parameters>
+                <!-- Query de prueba: posición home → picking de la tapa  -->
+                <!-- Reemplazar init/goal con las configuraciones reales   -->
                 <Queries>
                         <Query>
-                                <RobotControl name="ur3_right_shoulder_pan_joint" init="0.500" goal="0.545" />
-                                <RobotControl name="ur3_right_shoulder_lift_joint" init="0.375" goal="0.380" />
-                                <RobotControl name="ur3_right_elbow_joint" init="0.500" goal="0.835" />
-                                <RobotControl name="ur3_right_wrist_1_joint" init="0.375" goal="0.327" />
-                                <RobotControl name="ur3_right_wrist_2_joint" init="0.500" goal="0.375" />
-                                <RobotControl name="ur3_right_wrist_3_joint" init="0.500" goal="0.425" />
-                                <RobotControl name="ur3_right_gripper_joint" init="0.500" goal="0.813" />
+                                <RobotControl name="ur3_right_shoulder_pan_joint"   init="0.500" goal="0.388" />
+                                <RobotControl name="ur3_right_shoulder_lift_joint"  init="0.375" goal="0.366" />
+                                <RobotControl name="ur3_right_elbow_joint"          init="0.500" goal="0.250" />
+                                <RobotControl name="ur3_right_wrist_1_joint"        init="0.375" goal="0.387" />
+                                <RobotControl name="ur3_right_wrist_2_joint"        init="0.625" goal="0.625" />
+                                <RobotControl name="ur3_right_wrist_3_joint"        init="0.500" goal="0.517" />
+                                <RobotControl name="ur3_right_gripper_joint"        init="0.813" goal="0.813" />
                         </Query>
                 </Queries>
+                <!--
+                  Valores de la Query calculados de lab_controls.csv:
+                    init = C_HOME_SAFE: j5=90° → norm=0.625 (no 0.500 !)
+                    goal = C_BOX_LID_PICK
+
+                  Normalización (recordatorio):
+                    j1,j2,j4,j5,j6: norm = (q_deg * π/180 + 2π) / 4π
+                    j3 (elbow):      norm = (q_deg * π/180 + π)  / 2π
+                -->
         </Planner>
 
 </Problem>

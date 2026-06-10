@@ -1,0 +1,8 @@
+name,unit,j1,j2,j3,j4,j5,j6,comment
+C_HOME_SAFE,deg,,,,,,,posición segura inicial/intermedia
+C_BOX_LID_PICK,deg,,,,,,,pinza real sobre la tapa del aparato
+C_LID_OPEN_PLACE,deg,,,,,,,zona donde dejamos la tapa
+C_BATTERY_OLD_PICK,deg,,,,,,,pinza real sobre la pila gastada
+C_USED_PLACE,deg,,,,,,,zona caja pilas gastadas
+C_BATTERY_NEW_PICK,deg,,,,,,,pinza real sobre la pila nueva
+C_INSIDE_PLACE,deg,,,,,,,zona donde colocamos pila nueva en aparato

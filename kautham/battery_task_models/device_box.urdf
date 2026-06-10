@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot name="device_box">
+  <link name="base">
+    <visual>
+      <origin xyz="0 0 0.01" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.16 0.14 0.02"/>
+      </geometry>
+      <material name="device_blue">
+        <color rgba="0.1 0.25 0.9 1"/>
+      </material>
+    </visual>
+  </link>
+</robot>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot name="used_battery_box">
+  <link name="base">
+    <visual>
+      <origin xyz="0 0 0.01" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.12 0.10 0.02"/>
+      </geometry>
+      <material name="used_box_red">
+        <color rgba="0.8 0.1 0.1 1"/>
+      </material>
+    </visual>
+  </link>
+</robot>

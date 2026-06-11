@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<robot name="battery_old">
+  <link name="base">
+    <visual>
+      <origin xyz="0 0 0.0295" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.059" radius="0.0165"/>
+      </geometry>
+      <material name="old_battery_red">
+        <color rgba="0.9 0.1 0.1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.0295" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.059" radius="0.0165"/>
+      </geometry>
+    </collision>
+  </link>
+</robot>

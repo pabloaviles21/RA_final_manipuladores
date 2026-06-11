@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Config>
+    <Problemfiles>
+        <kautham name="OMPL_RRTConnect_battery_change_ur3.xml" />
+        <pddldomain name="ff-domains/battery_domain.pddl" />
+        <pddlproblem name="ff-domains/battery_problem.pddl" />
+        <graspit name="" />
+    </Problemfiles>
+    <States>
+        <Initial>
+            <Object name="BOX_LID" kthname="box_lid"> 0.040104 0.060515 0.103000 0.000000 0.000000 0.000000 1.000000 </Object>
+            <Object name="BATTERY_OLD" kthname="battery_old"> 0.033141 0.063381 0.041000 0.000000 0.000000 0.000000 1.000000 </Object>
+            <Object name="BATTERY_NEW" kthname="battery_new"> -0.071928 -0.038341 0.040000 0.000000 0.000000 0.000000 1.000000 </Object>
+            <Robot name="ur3_right" controlfile="controls/right_ur3_with_gripper.cntr">0.375111 0.372681 0.374806 0.316292 0.625556 0.503667 0.813000</Robot>
+        </Initial>
+    </States>
+    <Actions>
+        <Pick robot="UR3" object="BOX_LID" region="BOX_CLOSED_POS">
+            <Rob>ur3_right</Rob>
+            <Obj>box_lid</Obj>
+            <Link>robotiq_85_base_link</Link>
+            <Cont>controls/right_ur3_with_gripper.cntr</Cont>
+            <HomeControls>0.375111 0.372681 0.374806 0.316292 0.625556 0.503667 0.813000</HomeControls>
+            <GraspControls grasp="topgrasp">0.387806 0.371389 0.250139 0.381181 0.624903 0.513847 0.813000</GraspControls>
+        </Pick>
+        <Place robot="UR3" object="BOX_LID" region="LID_OPEN_AREA">
+            <Rob>ur3_right</Rob>
+            <Obj>box_lid</Obj>
+            <Cont>controls/right_ur3_with_gripper.cntr</Cont>
+            <HomeControls>0.375111 0.372681 0.374806 0.316292 0.625556 0.503667 0.813000</HomeControls>
+            <GraspControls grasp="topgrasp">0.362889 0.318431 0.353222 0.384194 0.624417 0.486667 0.813000</GraspControls>
+        </Place>
+        <Pick robot="UR3" object="BATTERY_OLD" region="INSIDE_BOX">
+            <Rob>ur3_right</Rob>
+            <Obj>battery_old</Obj>
+            <Link>robotiq_85_base_link</Link>
+            <Cont>controls/right_ur3_with_gripper.cntr</Cont>
+            <HomeControls>0.375111 0.372681 0.374806 0.316292 0.625556 0.503667 0.813000</HomeControls>
+            <GraspControls grasp="topgrasp">0.386792 0.367667 0.234944 0.392500 0.624972 0.512778 0.813000</GraspControls>
+        </Pick>
+        <Place robot="UR3" object="BATTERY_OLD" region="DISCARD_AREA">
+            <Rob>ur3_right</Rob>
+            <Obj>battery_old</Obj>
+            <Cont>controls/right_ur3_with_gripper.cntr</Cont>
+            <HomeControls>0.375111 0.372681 0.374806 0.316292 0.625556 0.503667 0.813000</HomeControls>
+            <GraspControls grasp="topgrasp">0.392722 0.400444 0.178583 0.388583 0.624333 0.521472 0.813000</GraspControls>
+        </Place>
+        <Pick robot="UR3" object="BATTERY_NEW" region="BATTERY_STORAGE">
+            <Rob>ur3_right</Rob>
+            <Obj>battery_new</Obj>
+            <Link>robotiq_85_base_link</Link>
+            <Cont>controls/right_ur3_with_gripper.cntr</Cont>
+            <HomeControls>0.375111 0.372681 0.374806 0.316292 0.625556 0.503667 0.813000</HomeControls>
+            <GraspControls grasp="topgrasp">0.402583 0.333417 0.326944 0.381625 0.624306 0.531208 0.813000</GraspControls>
+        </Pick>
+        <Place robot="UR3" object="BATTERY_NEW" region="INSIDE_BOX">
+            <Rob>ur3_right</Rob>
+            <Obj>battery_new</Obj>
+            <Cont>controls/right_ur3_with_gripper.cntr</Cont>
+            <HomeControls>0.375111 0.372681 0.374806 0.316292 0.625556 0.503667 0.813000</HomeControls>
+            <GraspControls grasp="topgrasp">0.386792 0.367667 0.234944 0.392500 0.624972 0.512778 0.813000</GraspControls>
+        </Place>
+        <Pick robot="UR3" object="BOX_LID" region="LID_OPEN_AREA">
+            <Rob>ur3_right</Rob>
+            <Obj>box_lid</Obj>
+            <Link>robotiq_85_base_link</Link>
+            <Cont>controls/right_ur3_with_gripper.cntr</Cont>
+            <HomeControls>0.375111 0.372681 0.374806 0.316292 0.625556 0.503667 0.813000</HomeControls>
+            <GraspControls grasp="topgrasp">0.362889 0.318431 0.353222 0.384194 0.624417 0.486667 0.813000</GraspControls>
+        </Pick>
+        <Place robot="UR3" object="BOX_LID" region="BOX_CLOSED_POS">
+            <Rob>ur3_right</Rob>
+            <Obj>box_lid</Obj>
+            <Cont>controls/right_ur3_with_gripper.cntr</Cont>
+            <HomeControls>0.375111 0.372681 0.374806 0.316292 0.625556 0.503667 0.813000</HomeControls>
+            <GraspControls grasp="topgrasp">0.387806 0.371389 0.250139 0.381181 0.624903 0.513847 0.813000</GraspControls>
+        </Place>
+    </Actions>
+</Config>

@@ -1,10 +1,30 @@
 <?xml version="1.0"?>
+<!--
+  lid.urdf
+  ========
+  Tapa del compartimento de batería del device_box.
+
+  Dimensiones placa:  158 mm × 138 mm × 8 mm
+    (cubre el exterior de device_box 160×140 con 1 mm de holgura por lado)
+
+  Asa (handle) superior: 40 mm × 20 mm × 15 mm
+    centrada horizontalmente, apoyada sobre la cara superior de la placa.
+    Permite a la pinza Robotiq 85 agarrar la tapa desde arriba.
+
+  Origen URDF: esquina inferior → Z = 0 es la cara inferior de la placa.
+  En la escena Kautham el obstacle Home tiene Z = 0.035 (sobre el borde de
+  la caja), por lo que la cara superior de la placa queda a Z_world = 0.043
+  y la punta del asa a Z_world = 0.058.
+-->
 <robot name="lid">
   <link name="base">
+
+    <!-- ── PLACA PRINCIPAL ───────────────────────────────────────────────── -->
+    <!--   72 × 72 × 8 mm (1 mm de solape por lado sobre la caja 70×70)      -->
     <visual>
       <origin xyz="0 0 0.004" rpy="0 0 0"/>
       <geometry>
-        <box size="0.07 0.06 0.008"/>
+        <box size="0.072 0.072 0.008"/>
       </geometry>
       <material name="lid_gray">
         <color rgba="0.75 0.75 0.75 1"/>
@@ -13,8 +33,27 @@
     <collision>
       <origin xyz="0 0 0.004" rpy="0 0 0"/>
       <geometry>
-        <box size="0.07 0.06 0.008"/>
+        <box size="0.072 0.072 0.008"/>
       </geometry>
     </collision>
+
+    <!-- ── ASA (HANDLE) ─────────────────────────────────────────────────── -->
+    <!--   40 × 20 × 15 mm, apoyada sobre la placa: centro a Z = 8 + 7.5 mm -->
+    <visual>
+      <origin xyz="0 0 0.0155" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.040 0.020 0.015"/>
+      </geometry>
+      <material name="lid_handle">
+        <color rgba="0.45 0.45 0.45 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.0155" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.040 0.020 0.015"/>
+      </geometry>
+    </collision>
+
   </link>
 </robot>

@@ -1,51 +1,39 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Problem name="OMPL_RRTConnect_battery_change_ur3">
-
         <Robot robot="/robots/robot_instances/UR_robotiq_85_gripper/ur3_robotiq_85_gripper.urdf.xacro" scale="1.0">
                 <KauthamName name="ur3_right" />
                 <Home TH="1.570796327" WZ="1.0" WY="0.0" WX="0.0" Z="0.0" Y="0.0" X="0.37" />
                 <ViewLink name="robotiq_85_base_link" />
         </Robot>
-
-        <Obstacle obstacle="/obstacles/chess/flat_chessboard/flat_chessboard.urdf" scale="1.0">
-                <KauthamName name="flat_chessboard" />
-                <Home TH="1.570796327" WZ="1.0" WY="0.0" WX="0.0" Z="0.0" Y="0.0" X="0.0" />
+        <Obstacle obstacle="/obstacles/battery_task/workspace_table.urdf" scale="1.0">
+                <KauthamName name="workspace_table" />
+                <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.030000" Y="0.000000" X="-0.250000" />
         </Obstacle>
-
-        
         <Obstacle obstacle="/obstacles/battery_task/device_box.urdf" scale="1.0">
                 <KauthamName name="device_box" />
-                <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.005" Y="0.080" X="-0.060" />
+                <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.035000" Y="0.057468" X="0.023660" />
         </Obstacle>
-
         <Obstacle obstacle="/obstacles/battery_task/new_battery_box.urdf" scale="1.0">
                 <KauthamName name="new_battery_box" />
-                <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.005" Y="-0.150" X="0.080" />
+                <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.035000" Y="-0.038176" X="-0.044920" />
         </Obstacle>
-
         <Obstacle obstacle="/obstacles/battery_task/used_battery_box.urdf" scale="1.0">
                 <KauthamName name="used_battery_box" />
-                <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.005" Y="0.220" X="0.080" />
+                <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.035000" Y="0.099263" X="0.119707" />
         </Obstacle>
-
-        
         <Obstacle obstacle="/obstacles/battery_task/lid.urdf" scale="1.0">
                 <KauthamName name="box_lid" />
-                <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.035" Y="0.125" X="-0.060" />
+                <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.103000" Y="0.057543" X="0.023692" />
         </Obstacle>
-
         <Obstacle obstacle="/obstacles/battery_task/battery_old.urdf" scale="1.0">
                 <KauthamName name="battery_old" />
-                <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.035" Y="0.045" X="-0.060" />
+                <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.041000" Y="0.057392" X="0.023627" />
         </Obstacle>
-
         <Obstacle obstacle="/obstacles/battery_task/battery_new.urdf" scale="1.0">
                 <KauthamName name="battery_new" />
-                <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.035" Y="-0.150" X="0.080" />
+                <Home TH="0.0" WZ="0.0" WY="0.0" WX="1.0" Z="0.040000" Y="-0.038176" X="-0.044920" />
         </Obstacle>
-
         <Controls robot="controls/right_ur3_with_gripper.cntr" />
-
         <Planner>
                 <Parameters>
                         <Name>omplRRTConnect</Name>
@@ -69,5 +57,4 @@
                         </Query>
                 </Queries>
         </Planner>
-
 </Problem>

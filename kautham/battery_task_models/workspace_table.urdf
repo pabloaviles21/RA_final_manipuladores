@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!--
+  workspace_table.urdf
+  ====================
+  Superficie plana de trabajo que representa la mesa del laboratorio.
+  Reemplaza el flat_chessboard del demo chess_ur3_robotiq.
+
+  Geometría:
+    1000 × 1000 × 30 mm  (1 m² de superficie, grosor de mesa 30 mm)
+    Cara SUPERIOR en Z = 0 (el suelo del espacio de trabajo).
+    Se extiende hacia abajo: Z = −30 mm a Z = 0.
+
+  En el XML de escena, colocar el obstacle Home en:
+    Z = 0.0,  Y = 0.0,  X = 0.0,  TH = 0,  WX = 1, WY = 0, WZ = 0
+  → La cara superior queda exactamente a Z_world = 0.
+  → Todos los obstáculos con Z_world ≥ 0.005 estarán sobre la mesa.
+
+  Colisión: caja completa (el robot no debe cruzar la mesa).
+-->
+<robot name="workspace_table">
+  <link name="base">
+
+    <!-- Superficie de mesa: cara superior en Z = 0, hacia abajo 30 mm -->
+    <visual>
+      <origin xyz="0 0 -0.015" rpy="0 0 0"/>
+      <geometry>
+        <box size="1.000 1.000 0.030"/>
+      </geometry>
+      <material name="table_wood">
+        <color rgba="0.76 0.60 0.42 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.015" rpy="0 0 0"/>
+      <geometry>
+        <box size="1.000 1.000 0.030"/>
+      </geometry>
+    </collision>
+
+  </link>
+</robot>

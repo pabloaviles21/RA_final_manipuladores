@@ -1,9 +1,0 @@
-name,unit,j1,j2,j3,j4,j5,j6,comment
-C_HOME_SAFE,deg,0.000000,-90.000000,0.000000,-90.000000,90.000000,0.000000,posición segura inicial/intermedia
-C_TRANSIT_SAFE,deg,-89.92,-91.67,-45.07,-132.27,90.40,2.64,posición segura baja entre acciones
-C_BOX_LID_PICK,deg,-80.78,-92.60,-89.95,-85.55,89.93,9.97,pinza real sobre la tapa del aparato
-C_LID_OPEN_PLACE,deg,-98.719920,-130.729680,-52.840080,-83.380320,89.580240,-9.60,zona donde dejamos la tapa
-C_BATTERY_OLD_PICK,deg,-81.51,-95.28,-95.42,-77.40,89.98,9.20,pinza real sobre la pila gastada
-C_USED_PLACE,deg,-77.24,-71.68,-115.71,-80.22,89.52,15.46,zona caja pilas gastadas
-C_BATTERY_NEW_PICK,deg,-70.14,-119.94,-62.30,-85.23,89.50,22.47,pinza real sobre la pila nueva
-C_INSIDE_PLACE,deg,-81.51,-95.28,-95.42,-77.40,89.98,9.20,zona donde colocamos pila nueva

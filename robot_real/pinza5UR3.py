@@ -1,4 +1,4 @@
-def pinza40UR3():
+def pinza5UR3():
   global _hidden_verificationVariable=0
   step_count_2e4ded3d_39b1_4dbb_98a5_a2de29ceb273 = 0.0
   thread Step_Counter_Thread_eaaf0193_d123_4b07_8fc9_a27efcf95439():
@@ -1196,7 +1196,7 @@ def pinza40UR3():
   #======    End of OnRobot RG Engine    ======#
   rg_mounting_angle_arr[0] = 0.0
   rg_fingertip_arr[0] = 4.599999904632568
-  rg_Depth_arr[0] = 5.0
+  rg_Depth_arr[0] = 0.20000000298023227
   textmsg(on_devices_primary_log, ": Quick Changer + RG2 + [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]")
   on_follow_tcp = False
   on_tcp_active_is_primary = True
@@ -1474,7 +1474,7 @@ def pinza40UR3():
     #   Source: OnRobot, 5.17.1, OnRobot A/S
     #   Type: Agarre RG
     $ 2 "Agarre RG"
-on_return = rg_grip(40.0, 40.0, tool_index = 0, blocking = True, depth_comp = False, popupmsg = True)
+on_return = rg_grip(5.0, 40.0, tool_index = 0, blocking = True, depth_comp = False, popupmsg = True)
 rg_payload_set(mass = 0.0, tool_index = 0, use_guard = True)
     # end: URCap Program Node
   end

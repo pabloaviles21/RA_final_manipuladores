@@ -16,11 +16,16 @@
 
     (box_open)
 
+   ;; Estos predicados son especificos para el robot (caja).
+   ;; Permiten modelar que el interior solo es accesible cuando la tapa ha sido retirada.
+
     (is_lid ?o - object)
     (is_lid_open_area ?l - location)
     (is_box_closed_pos ?l - location)
     (is_box_interior ?l - location)
   )
+;; Coger un objeto. Si el objeto está dentro de la caja,
+;; la acción solo es válida cuando la caja está abierta.
 
   (:action pick
     :parameters (?r - robot ?o - object ?l - location)
@@ -36,6 +41,9 @@
       (clear ?l)
     )
   )
+
+;; Dejar un objeto. Colocar la tapa en la zona de apertura abre la caja,
+;; colocarla en la posición cerrada vuelve a cerrar la caja.
 
   (:action place
     :parameters (?r - robot ?o - object ?l - location)

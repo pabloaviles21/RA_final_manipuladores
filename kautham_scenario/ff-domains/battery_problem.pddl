@@ -2,9 +2,10 @@
 
   (:domain battery-swap)
 
+;; Las cajas y zonas fijas se modelan como locations y no como objects, porque el robot no las recoge ni las desplaza.
   (:objects
     ur3 - robot
-
+   
     box_lid - object
     battery_old - object
     battery_new - object
@@ -16,6 +17,7 @@
     discard_area - location
   )
 
+;; Estado inicial de la tarea: caja cerrada, batería vieja dentro y batería nueva disponible en la zona de nuevas.
   (:init
     (handEmpty ur3)
 
@@ -31,9 +33,8 @@
     (is_box_closed_pos box_closed_pos)
     (is_box_interior inside_box)
 
-    ;; La caja empieza cerrada: NO ponemos (box_open)
   )
-
+;; Objetivo: sustituir la batería, descartar la antigua, cerrar de nuevo la caja y dejar la mano del robot libre.
   (:goal (and
     (in battery_old discard_area)
     (in battery_new inside_box)

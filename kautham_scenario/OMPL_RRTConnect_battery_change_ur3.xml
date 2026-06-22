@@ -1,3 +1,45 @@
+<!--
+  Escena geométrica utilizada por Kautham para la tarea de cambio de batería.
+
+  El robot UR3 con pinza se coloca en X = 0.37 m, con orientación TH = pi/2,
+  para mantener una configuración equivalente al ejemplo original de UR3 y situar
+  el brazo frente al área de trabajo.
+
+  La mesa se coloca en X = -0.25 m y Z = 0.03 m. Esta altura se ajustó para que
+  la superficie de trabajo quedara correctamente alineada con los modelos de los
+  objetos y para evitar colisiones iniciales con la mesa del laboratorio ya que al
+  ser la pinza más grande en el laboratorio las planificaciones del kautham a veces
+  eran muy bajas y el robot colisionaba con la mesa del laboratorio. Al subir la 
+  mesa 3 cm, el robot puede planificar trayectorias más altas y evitar colisiones 
+  con la mesa del laboratorio.
+
+  Las cajas fijas se colocan según la distribución medida en el montaje real:
+  - device_box:       X =  0.033141 m, Y =  0.063381 m
+  - new_battery_box:  X = -0.071928 m, Y = -0.038341 m
+  - used_battery_box: X =  0.122062 m, Y =  0.060742 m
+
+  Los objetos manipulables se colocan sobre esas cajas:
+  - box_lid:     X = 0.040104 m,  Y = 0.060515 m,  Z = 0.103 m
+  - battery_old: X = 0.033141 m,  Y = 0.063381 m,  Z = 0.041 m
+  - battery_new: X = -0.071928 m, Y = -0.038341 m, Z = 0.040 m
+
+  Las coordenadas Z de cada objeto no solo indican su posición física, sino que
+  también se ajustaron para que cada geometría quedara apoyada sobre su soporte
+  sin penetrar otras mallas. Esto fue necesario para evitar errores de colisión
+  en Kautham que nos aparecían al intentar planificar.
+
+Se usa OMPL RRTConnect porque el problema se resuelve en el espacio de configuraciones
+del UR3, con varios grados de libertad, y este planificador suele encontrar trayectorias
+factibles de forma eficiente en este tipo de escenarios.
+
+Parámetros elegidos:
+
+_Incremental (0/1) = 0: se planifica cada consulta de forma completa, ya que nos interesa obtener una trayectoria final válida y no depurar el crecimiento incremental del árbol.
+_Max Planning Time = 10: se da suficiente margen para encontrar trayectorias libres de colisión sin hacer que cada intento tarde demasiado.
+_Simplify Solution = 2: se usa simplificación para reducir puntos intermedios innecesarios y obtener una trayectoria más limpia que la solución inicial del muestreo.
+No sale en el archivo, de base el planificador lo tiene en 2, para hacer multiples pasadas de simplificación.
+Range = 0.5: se mantiene un avance intermedio del árbol; suficientemente grande para explorar el espacio, pero sin hacer saltos excesivos que puedan dificultar la búsqueda de caminos sin colisión.
+-->
 <?xml version='1.0' encoding='utf-8'?>
 <Problem name="OMPL_RRTConnect_battery_change_ur3">
         <Robot robot="/robots/robot_instances/UR_robotiq_85_gripper/ur3_robotiq_85_gripper.urdf.xacro" scale="1.0">

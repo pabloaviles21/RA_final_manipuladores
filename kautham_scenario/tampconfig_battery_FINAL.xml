@@ -1,4 +1,29 @@
 <?xml version='1.0' encoding='utf-8'?>
+<!--
+Configuración TAMP de la tarea de cambio de batería.
+
+Este archivo conecta la parte simbólica del problema con la parte geométrica de
+Kautham. Aquí definimos cómo se relacionan las acciones con posiciones concretas 
+del escenario.
+
+El estado inicial coloca los objetos manipulables en la escena: la tapa sobre la
+caja, la batería vieja dentro del dispositivo y la batería nueva en su soporte.
+Estas posiciones se hicieron coincidir con la distribución del montaje de
+laboratorio y con las cajas definidas en la escena geométrica.
+
+Para cada acción Pick o Place se definió una posición concreta del robot. Estas
+posiciones se tomaron a partir de configuraciones medidas en el laboratorio y se 
+transformaron al formato de Kautham.
+
+HomeControls contiene la configuración segura común del robot, usada como punto
+de referencia entre acciones. GraspControls contiene la configuración específica
+de cada acción: coger la tapa, dejarla abierta, coger la batería vieja, dejarla
+en descarte, coger la batería nueva, colocarla dentro de la caja y volver a cerrar
+la tapa.
+
+De esta forma, el planificador no trabaja con posiciones genéricas, sino con
+puntos de agarre y colocación adaptados al montaje real del laboratorio.
+-->
 <Config>
     <Problemfiles>
         <kautham name="OMPL_RRTConnect_battery_change_ur3.xml" />

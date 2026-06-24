@@ -8,9 +8,12 @@ Abrir_pinza = 'pinza60UR3.py'
 Cerrar_tapa = 'pinza5UR3.py'
 Cerrar_pila = 'pinza10UR3.py'
 
+# Probamos diferentes velocidades y aceleraciones, y estos valores fueron los que dieron menos problemas con el UR3 real.
+# Permiten que el movimiento sea suficientemente lento para evitar tirones y coordinarlo mejor con las acciones de la pinza.
 ACC = 0.1
 VEL = 0.08
 
+# Los tiempos de espera evitan que la siguiente acción empiece antes de que el robot termine el tramo actual, especialmente cuando después hay que abrir o cerrar la pinza.
 def send_joint_path(path, sock):
     for joint_config in path:
         print(joint_config)
@@ -42,11 +45,10 @@ def cerrar_pila(sock):
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect((HOST, PORT))
 
-# Empieza con movimiento a posición segura
+# Antes de iniciar la tarea, llevamos el robot a una configuración segura común.
+# Así empezamos desde una posición que consideramos segura antes de acercarnos a la caja o a las baterías.
 C_TRANSIT_SAFE = [-1.569401459656702, -1.5999377402495956, -0.7866171013470411, -2.3085428128226946, 1.5777832288564806, 0.04608088104285457]
 send_joint_path([C_TRANSIT_SAFE], sock)
-
-# Sin apertura inicial: la pinza se deja abierta manualmente
 
 # Trayectoria 1 - Transit
 path_1 = [
@@ -186,6 +188,7 @@ cerrar_pila(sock)
 # Trayectoria 8 - Transfer
 path_8 = [
     [-1.2241781261390274, -2.093343716051794, -1.0873429165192703, -1.487544121474767, 1.5620752655885317, 0.39217129413292096],
+    # Punto HIGH añadido para elevar la batería nueva después del agarre y salir del soporte antes de desplazarla hacia la caja.
     [-1.224173937349, -2.103819880354, -0.885929128312, -1.678483141643, 1.561546081759, 0.392873614624],
     [-1.339252570644919, -1.9288750574510611, -0.9871009781285273, -1.761210351924076, 1.5673112533445146, 0.27680782310289886],
     [-1.4543270151508105, -1.7644063988503285, -0.8868590397377842, -2.034876582373385, 1.5725472411004977, 0.16144435207287672],

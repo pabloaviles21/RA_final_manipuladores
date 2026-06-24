@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
 <!--
   Escena geométrica utilizada por Kautham para la tarea de cambio de batería.
 
@@ -37,10 +38,9 @@ Parámetros elegidos:
 _Incremental (0/1) = 0: se planifica cada consulta de forma completa, ya que nos interesa obtener una trayectoria final válida y no depurar el crecimiento incremental del árbol.
 _Max Planning Time = 10: se da suficiente margen para encontrar trayectorias libres de colisión sin hacer que cada intento tarde demasiado.
 _Simplify Solution = 2: se usa simplificación para reducir puntos intermedios innecesarios y obtener una trayectoria más limpia que la solución inicial del muestreo.
-No sale en el archivo, de base el planificador lo tiene en 2, para hacer multiples pasadas de simplificación.
+No sale en el archivo pero de base el planificador lo tiene en 2.
 Range = 0.5: se mantiene un avance intermedio del árbol; suficientemente grande para explorar el espacio, pero sin hacer saltos excesivos que puedan dificultar la búsqueda de caminos sin colisión.
 -->
-<?xml version='1.0' encoding='utf-8'?>
 <Problem name="OMPL_RRTConnect_battery_change_ur3">
         <Robot robot="/robots/robot_instances/UR_robotiq_85_gripper/ur3_robotiq_85_gripper.urdf.xacro" scale="1.0">
                 <KauthamName name="ur3_right" />
